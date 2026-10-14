@@ -294,39 +294,43 @@
       position: fixed;
       inset: 0;
       z-index: 9000;
-      display: grid;
-      place-items: center;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
       overflow: hidden;
-      padding: 24px;
+      padding: clamp(24px, 4vw, 60px) clamp(24px, 6vw, 100px);
       background: #090407;
-      transition: opacity .8s ease, visibility .8s ease;
+      transition: opacity .8s cubic-bezier(0.4, 0, 0.2, 1), visibility .8s ease, transform .8s ease;
     }
 
     #intro::before {
       position: absolute;
-      inset: -3%;
+      inset: -2%;
       content: "";
       background:
-        linear-gradient(90deg, rgba(7, 2, 5, .1), rgba(12, 3, 9, .86) 57%, rgba(6, 2, 5, .96)),
-        linear-gradient(0deg, #090407 0%, transparent 30%, rgba(6, 2, 5, .24)),
-        var(--hero-image) center / cover no-repeat;
-      animation: introZoom 16s ease-in-out infinite alternate;
+        linear-gradient(90deg, rgba(8, 3, 7, 0.68) 0%, rgba(8, 3, 7, 0.32) 36%, rgba(8, 3, 7, 0.04) 55%, rgba(8, 3, 7, 0.25) 100%),
+        linear-gradient(0deg, rgba(8, 3, 7, 0.5) 0%, transparent 25%, transparent 75%, rgba(8, 3, 7, 0.3) 100%),
+        var(--hero-image) 52% center / cover no-repeat;
+      filter: contrast(1.04) saturate(1.08) brightness(1.02);
+      animation: introZoom 20s ease-in-out infinite alternate;
     }
 
     #intro::after {
       position: absolute;
       inset: 0;
       content: "";
-      background-image:
-        radial-gradient(circle at 75% 20%, rgba(255, 130, 173, .19) 0 2px, transparent 3px),
-        radial-gradient(circle at 68% 63%, rgba(255, 207, 156, .2) 0 1px, transparent 2px);
-      background-size: 63px 63px, 47px 47px;
-      mask-image: linear-gradient(90deg, transparent 25%, #000);
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse 60% 45% at 50% 18%, rgba(255, 180, 205, 0.12), transparent 70%),
+        radial-gradient(circle at 20% 80%, rgba(255, 120, 170, 0.08), transparent 50%);
     }
 
     @keyframes introZoom {
-      to {
-        transform: scale(1.055);
+      0% {
+        transform: scale(1);
+      }
+      100% {
+        transform: scale(1.045);
       }
     }
 
@@ -334,76 +338,157 @@
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
+      transform: scale(1.02);
     }
 
     .intro-card {
       position: relative;
-      z-index: 1;
-      width: min(560px, 100%);
-      margin-left: min(42vw, 620px);
-      padding: clamp(30px, 5vw, 52px);
+      z-index: 2;
+      width: min(490px, 100%);
+      margin: 0;
+      padding: clamp(30px, 4vw, 44px);
       text-align: center;
-      border: 1px solid rgba(255, 188, 213, .22);
+      border: 1px solid rgba(255, 195, 220, 0.32);
       border-radius: 32px;
-      background: rgba(20, 7, 15, .58);
-      backdrop-filter: blur(18px);
-      box-shadow: var(--shadow), inset 0 1px rgba(255, 255, 255, .1);
+      background: linear-gradient(145deg, rgba(28, 9, 21, 0.48) 0%, rgba(14, 4, 12, 0.68) 100%);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      box-shadow:
+        0 24px 60px rgba(0, 0, 0, 0.45),
+        0 0 45px rgba(230, 50, 110, 0.16),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3),
+        inset 0 -1px 0 rgba(255, 180, 210, 0.15);
+      animation: introCardEntrance 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    @keyframes introCardEntrance {
+      from {
+        opacity: 0;
+        transform: translateY(22px) scale(0.97);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
     }
 
     .intro-seal {
-      width: 78px;
-      height: 78px;
+      width: 72px;
+      height: 72px;
       display: grid;
       place-items: center;
-      margin: 0 auto 22px;
-      border: 1px solid rgba(255, 198, 217, .42);
+      margin: 0 auto 18px;
+      border: 1px solid rgba(255, 205, 225, 0.55);
       border-radius: 50%;
       color: #fff;
-      background: radial-gradient(circle at 35% 28%, #ff91ba, #9d164f 62%, #4d0826);
-      box-shadow: 0 0 0 7px rgba(255, 113, 166, .05), 0 0 38px rgba(255, 90, 151, .45);
-      font-size: 2rem;
+      background: radial-gradient(circle at 35% 28%, #ff85b3, #c2185b 60%, #540628);
+      box-shadow:
+        0 0 0 6px rgba(255, 110, 165, 0.12),
+        0 0 28px rgba(255, 75, 145, 0.55),
+        inset 0 2px 4px rgba(255, 255, 255, 0.45);
+      font-size: 1.85rem;
       animation: heartbeat 2s ease-in-out infinite;
     }
 
-    @keyframes heartbeat {
+    .intro-card .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.72rem;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: #ffb8d2;
+      text-shadow: 0 0 12px rgba(255, 105, 160, 0.4);
+    }
 
-      0%,
-      100% {
-        transform: scale(1);
-      }
+    .intro-card .eyebrow::before,
+    .intro-card .eyebrow::after {
+      content: "";
+      width: 24px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 180, 210, 0.7));
+    }
 
-      12% {
-        transform: scale(1.1);
-      }
-
-      24% {
-        transform: scale(1);
-      }
-
-      34% {
-        transform: scale(1.07);
-      }
-
-      48% {
-        transform: scale(1);
-      }
+    .intro-card .eyebrow::after {
+      background: linear-gradient(90deg, rgba(255, 180, 210, 0.7), transparent);
     }
 
     .intro-card h1 {
-      margin: 0;
+      margin: 10px 0 12px;
       font-family: var(--script);
-      font-size: clamp(2.35rem, 7vw, 4.6rem);
+      font-size: clamp(2.3rem, 5.5vw, 3.8rem);
       font-weight: 700;
       line-height: 1.15;
-      text-shadow: 0 0 34px rgba(255, 106, 163, .4);
+      background: linear-gradient(180deg, #ffffff 15%, #ffe4ee 70%, #ffb6ce 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 4px 18px rgba(225, 45, 105, 0.45));
     }
 
     .intro-card p {
-      max-width: 420px;
-      margin: 18px auto 27px;
-      color: rgba(255, 245, 248, .75);
+      max-width: 410px;
+      margin: 0 auto 24px;
+      color: rgba(255, 245, 248, 0.88);
       font-family: var(--serif);
       font-style: italic;
+      font-size: 0.98rem;
+      line-height: 1.6;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+    }
+
+    #open-gift {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 15px 36px;
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 205, 225, 0.45);
+      background: linear-gradient(135deg, #ff4f93 0%, #d81b60 52%, #940e40 100%);
+      color: #ffffff;
+      box-shadow:
+        0 10px 28px rgba(216, 27, 96, 0.48),
+        0 0 20px rgba(255, 105, 160, 0.28),
+        inset 0 1px 0 rgba(255, 255, 255, 0.35);
+      cursor: pointer;
+      overflow: hidden;
+      transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.28s ease, filter 0.28s ease;
+    }
+
+    #open-gift::after {
+      position: absolute;
+      top: -50%;
+      left: -60%;
+      width: 40%;
+      height: 200%;
+      content: "";
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.32), transparent);
+      transform: rotate(25deg);
+      animation: btnShimmer 3.5s ease-in-out infinite;
+    }
+
+    @keyframes btnShimmer {
+      0%, 70% { transform: translateX(0) rotate(25deg); opacity: 0; }
+      71% { opacity: 1; }
+      100% { transform: translateX(450%) rotate(25deg); opacity: 0; }
+    }
+
+    #open-gift:hover {
+      transform: translateY(-2px) scale(1.025);
+      box-shadow:
+        0 14px 34px rgba(216, 27, 96, 0.58),
+        0 0 30px rgba(255, 105, 160, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.45);
+      filter: brightness(1.05);
+    }
+
+    #open-gift:active {
+      transform: translateY(1px) scale(0.985);
     }
 
     #loader {
@@ -623,7 +708,8 @@
       inset: -2%;
       z-index: -3;
       content: "";
-      background: var(--hero-image) 35% center / cover no-repeat;
+      background: var(--hero-image) 52% center / cover no-repeat;
+      filter: contrast(1.04) saturate(1.08) brightness(1.02);
       animation: heroZoom 20s ease-in-out infinite alternate;
     }
 
@@ -633,7 +719,7 @@
       z-index: -2;
       content: "";
       background:
-        linear-gradient(90deg, rgba(4, 2, 3, .06) 10%, rgba(7, 3, 5, .42) 44%, rgba(7, 3, 6, .92) 72%, #080408 100%),
+        linear-gradient(90deg, rgba(8, 3, 7, 0.62) 0%, rgba(8, 3, 7, 0.28) 36%, rgba(8, 3, 7, 0.05) 55%, rgba(8, 3, 7, 0.3) 100%),
         linear-gradient(0deg, #09050a 0%, transparent 22%, rgba(8, 4, 7, .15) 78%, #09050a 100%);
     }
 
@@ -2448,13 +2534,13 @@
       }
 
       #home::before {
-        background-position: 34% center;
+        background-position: 51% 18%;
       }
 
       #home::after {
         background:
-          linear-gradient(0deg, #09050a 2%, rgba(8, 4, 7, .86) 32%, rgba(7, 3, 5, .08) 70%),
-          linear-gradient(90deg, transparent, rgba(8, 3, 6, .32));
+          linear-gradient(0deg, #09050a 2%, rgba(8, 4, 7, .82) 32%, rgba(7, 3, 5, .05) 65%),
+          linear-gradient(90deg, transparent, rgba(8, 3, 6, .2));
       }
 
       .hero-copy {
@@ -2707,36 +2793,69 @@
         white-space: nowrap;
       }
 
-      .intro-card {
-        align-self: end;
-        margin: 0 0 max(3svh, env(safe-area-inset-bottom));
-        padding: 28px 22px 30px;
-        border-radius: 28px;
-        background: rgba(20, 7, 15, .76);
-        box-shadow: 0 26px 80px rgba(0, 0, 0, .55), inset 0 1px rgba(255, 255, 255, .1);
+      #intro {
+        align-items: flex-end;
+        justify-content: center;
+        padding: 16px 14px calc(16px + env(safe-area-inset-bottom));
       }
 
       #intro::before {
         background:
-          linear-gradient(0deg, rgba(7, 2, 5, .99) 0%, rgba(9, 3, 7, .62) 45%, rgba(6, 2, 5, .04) 76%),
-          var(--hero-image) 27% center / cover no-repeat;
+          linear-gradient(0deg, rgba(8, 3, 7, 0.9) 0%, rgba(8, 3, 7, 0.52) 34%, rgba(8, 3, 7, 0.02) 58%, rgba(8, 3, 7, 0.22) 100%),
+          var(--hero-image) 51% 16% / cover no-repeat;
+        filter: contrast(1.04) saturate(1.08) brightness(1.02);
+      }
+
+      .intro-card {
+        width: 100%;
+        max-width: 390px;
+        margin: 0 auto;
+        padding: 18px 16px 20px;
+        border-radius: 24px;
+        background: linear-gradient(145deg, rgba(26, 9, 20, 0.52) 0%, rgba(13, 4, 11, 0.74) 100%);
+        backdrop-filter: blur(18px) saturate(175%);
+        -webkit-backdrop-filter: blur(18px) saturate(175%);
+        border: 1px solid rgba(255, 185, 215, 0.32);
+        box-shadow:
+          0 16px 45px rgba(0, 0, 0, 0.52),
+          0 0 32px rgba(230, 50, 110, 0.18),
+          inset 0 1px 0 rgba(255, 255, 255, 0.28);
       }
 
       .intro-seal {
-        width: 68px;
-        height: 68px;
-        margin-bottom: 17px;
+        width: 48px;
+        height: 48px;
+        font-size: 1.35rem;
+        margin-bottom: 9px;
+      }
+
+      .intro-card .eyebrow {
+        font-size: 0.63rem;
+        letter-spacing: 0.2em;
+        gap: 8px;
+      }
+
+      .intro-card .eyebrow::before,
+      .intro-card .eyebrow::after {
+        width: 16px;
       }
 
       .intro-card h1 {
-        font-size: clamp(2.35rem, 12vw, 3.45rem);
-        line-height: 1.06;
+        font-size: clamp(1.75rem, 8vw, 2.35rem);
+        line-height: 1.1;
+        margin: 5px 0 6px;
       }
 
       .intro-card p {
-        margin: 15px auto 22px;
-        font-size: .9rem;
-        line-height: 1.62;
+        margin: 4px auto 15px;
+        font-size: 0.83rem;
+        line-height: 1.45;
+        max-width: 290px;
+      }
+
+      #open-gift {
+        padding: 11px 26px;
+        font-size: 0.9rem;
       }
 
       #home {
@@ -2746,7 +2865,7 @@
       }
 
       #home::before {
-        background-position: 31% center;
+        background-position: 51% 16%;
       }
 
       #home::after {
@@ -4993,9 +5112,9 @@
               <!-- Built-in Romantic Motion Reel (Graceful Backdrop & Fallback) -->
               <div class="cinema-montage-backdrop" id="cinema-montage-backdrop" aria-hidden="true">
                 <div class="cinema-montage-slide active" style="background-image: url('images/hero.png');"></div>
-                <div class="cinema-montage-slide" style="background-image: url('images/memory-1.jpg');"></div>
-                <div class="cinema-montage-slide" style="background-image: url('images/memory-3.jpg');"></div>
-                <div class="cinema-montage-slide" style="background-image: url('images/memory-5.jpg');"></div>
+                <div class="cinema-montage-slide" style="background-image: url('images/memory-1.jpeg');"></div>
+                <div class="cinema-montage-slide" style="background-image: url('images/memory-3.jpeg');"></div>
+                <div class="cinema-montage-slide" style="background-image: url('images/memory-5.jpeg');"></div>
               </div>
 
               <!-- Video Element (Professional Autoplay on Scroll) -->
@@ -5434,10 +5553,10 @@
 
           <!-- Memory 1 -->
           <div class="studio-item-card">
-            <img class="studio-item-preview" id="studio-prev-p1" src="images/memory-1.jpg" alt="Memory 1">
+            <img class="studio-item-preview" id="studio-prev-p1" src="images/memory-1.jpeg" alt="Memory 1">
             <div class="studio-item-info">
               <strong>Memory 1 (The Day We Met)</strong>
-              <code>images/memory-1.jpg</code>
+              <code>images/memory-1.jpeg</code>
               <p>Where our story began</p>
             </div>
             <button class="studio-upload-btn" type="button" data-pick="p1">Choose Image</button>
@@ -5445,10 +5564,10 @@
 
           <!-- Memory 2 -->
           <div class="studio-item-card">
-            <img class="studio-item-preview" id="studio-prev-p2" src="images/memory-2.jpg" alt="Memory 2">
+            <img class="studio-item-preview" id="studio-prev-p2" src="images/memory-2.jpeg" alt="Memory 2">
             <div class="studio-item-info">
               <strong>Memory 2 (Our First Photo)</strong>
-              <code>images/memory-2.jpg</code>
+              <code>images/memory-2.jpeg</code>
               <p>The smile I adore</p>
             </div>
             <button class="studio-upload-btn" type="button" data-pick="p2">Choose Image</button>
@@ -5456,10 +5575,10 @@
 
           <!-- Memory 3 -->
           <div class="studio-item-card">
-            <img class="studio-item-preview" id="studio-prev-p3" src="images/memory-3.jpg" alt="Memory 3">
+            <img class="studio-item-preview" id="studio-prev-p3" src="images/memory-3.jpeg" alt="Memory 3">
             <div class="studio-item-info">
               <strong>Memory 3 (Adventure Partner)</strong>
-              <code>images/memory-3.jpg</code>
+              <code>images/memory-3.jpeg</code>
               <p>Our first adventure together</p>
             </div>
             <button class="studio-upload-btn" type="button" data-pick="p3">Choose Image</button>
@@ -5467,10 +5586,10 @@
 
           <!-- Memory 4 -->
           <div class="studio-item-card">
-            <img class="studio-item-preview" id="studio-prev-p4" src="images/memory-4.jpg" alt="Memory 4">
+            <img class="studio-item-preview" id="studio-prev-p4" src="images/memory-4.jpeg" alt="Memory 4">
             <div class="studio-item-info">
               <strong>Memory 4 (Just Us, Always)</strong>
-              <code>images/memory-4.jpg</code>
+              <code>images/memory-4.jpeg</code>
               <p>Today, I still choose you</p>
             </div>
             <button class="studio-upload-btn" type="button" data-pick="p4">Choose Image</button>
@@ -5478,10 +5597,10 @@
 
           <!-- Memory 5 -->
           <div class="studio-item-card">
-            <img class="studio-item-preview" id="studio-prev-p5" src="images/memory-5.jpg" alt="Memory 5">
+            <img class="studio-item-preview" id="studio-prev-p5" src="images/memory-5.jpeg" alt="Memory 5">
             <div class="studio-item-info">
               <strong>Memory 5 (Beautiful View)</strong>
-              <code>images/memory-5.jpg</code>
+              <code>images/memory-5.jpeg</code>
               <p>Beautiful, inside and out</p>
             </div>
             <button class="studio-upload-btn" type="button" data-pick="p5">Choose Image</button>
@@ -5500,11 +5619,11 @@
 
           <!-- Final Surprise Section Background -->
           <div class="studio-item-card">
-            <img class="studio-item-preview" id="studio-prev-surprise" src="images/surprise-bg.jpg"
+            <img class="studio-item-preview" id="studio-prev-surprise" src="images/surprise-bg.jpeg"
               alt="Surprise Background">
             <div class="studio-item-info">
               <strong>The Final Surprise</strong>
-              <code>images/surprise-bg.jpg</code>
+              <code>images/surprise-bg.jpeg</code>
               <p>One final moment section backdrop</p>
             </div>
             <button class="studio-upload-btn" type="button" data-pick="surprise">Choose Image</button>
@@ -5512,11 +5631,11 @@
 
           <!-- Forever Love Finale Background -->
           <div class="studio-item-card">
-            <img class="studio-item-preview" id="studio-prev-forever" src="images/forever-bg.jpg"
+            <img class="studio-item-preview" id="studio-prev-forever" src="images/forever-bg.jpeg"
               alt="Forever Background">
             <div class="studio-item-info">
               <strong>Forever & Always Finale</strong>
-              <code>images/forever-bg.jpg</code>
+              <code>images/forever-bg.jpeg</code>
               <p>Ending love letter section backdrop</p>
             </div>
             <button class="studio-upload-btn" type="button" data-pick="forever">Choose Image</button>
